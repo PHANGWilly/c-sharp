@@ -1,0 +1,414 @@
+using System;
+using System.Threading;
+namespace ConsoleApp1
+{
+    class Program
+    {
+        public static bool Player2Win(char[,] Plateau)
+        {
+            //Verifie si le Player2 a gagné
+            //Lignes
+            if (Plateau[0, 0] == 'O' & Plateau[1, 0] == 'O' & Plateau[2, 0] == 'O')
+                return (true);
+            else if (Plateau[0, 1] == 'O' & Plateau[1, 1] == 'O' & Plateau[2, 1] == 'O')
+                return (true);
+            else if (Plateau[0, 2] == 'O' & Plateau[1, 2] == 'O' & Plateau[2, 2] == 'O')
+                return (true);
+
+            //Colonnes
+            else if (Plateau[0, 0] == 'O' & Plateau[0, 1] == 'O' & Plateau[0, 2] == 'O')
+                return (true);
+            else if (Plateau[1, 0] == 'O' & Plateau[1, 1] == 'O' & Plateau[1, 2] == 'O')
+                return (true);
+            else if (Plateau[2, 0] == 'O' & Plateau[2, 1] == 'O' & Plateau[2, 2] == 'O')
+                return (true);
+
+            //Diagonales 
+            else if (Plateau[0, 0] == 'O' & Plateau[1, 1] == 'O' & Plateau[2, 2] == 'O')
+                return (true);
+            else if (Plateau[2, 0] == 'O' & Plateau[1, 1] == 'O' & Plateau[0, 2] == 'O')
+                return (true);
+
+            else
+                return (false);
+        }
+
+        public static bool Player1Win(char[,] Plateau)
+        {
+            //Verifie si le Player1 a gagné
+            //Lignes
+            if (Plateau[0, 0] == 'X' & Plateau[1, 0] == 'X' & Plateau[2, 0] == 'X')
+                return (true);
+            if (Plateau[0, 1] == 'X' & Plateau[1, 1] == 'X' & Plateau[2, 1] == 'X')
+                return (true);
+            if (Plateau[0, 2] == 'X' & Plateau[1, 2] == 'X' & Plateau[2, 2] == 'X')
+                return (true);
+            //Colonnes
+            if (Plateau[0, 0] == 'X' & Plateau[0, 1] == 'X' & Plateau[0, 2] == 'X')
+                return (true);
+            if (Plateau[1, 0] == 'X' & Plateau[1, 1] == 'X' & Plateau[1, 2] == 'X')
+                return (true);
+            if (Plateau[2, 0] == 'X' & Plateau[2, 1] == 'X' & Plateau[2, 2] == 'X')
+                return (true);
+            //Diagonales
+            if (Plateau[0, 0] == 'X' & Plateau[1, 1] == 'X' & Plateau[2, 2] == 'X')
+                return (true);
+            if (Plateau[2, 0] == 'X' & Plateau[1, 1] == 'X' & Plateau[0, 2] == 'X')
+                return (true);
+            else
+                return (false);
+        }
+
+        public static int TranscriptionCoordinates(string XY, int Position)
+        {
+            /*
+            Vérification des coordonnées entrées par les joueurs correspondent au Plateau traduites en matrice 
+            Exemple : Si Player(1/2) rentre "A1/a1" 
+            
+            Visuellement : 
+              A B C 
+            1 ☺ ■ ■ 
+            2 ■ ■ ■
+            3 ■ ■ ■ 
+
+            Système Matriciel :
+              0 1 2
+            0 ☺ ■ ■ 
+            1 ■ ■ ■
+            2 ■ ■ ■
+            
+           ☺ sera appliquée aux bonnes coordonnées Player1 = X / Player2 = O
+           */
+
+            switch (XY[Position])
+            {
+                case 'A':
+                    return (0);
+                case 'a':
+                    return (0);
+                case '1':
+                    return (0);
+
+                case 'B':
+                    return (1);
+                case 'b':
+                    return (1);
+                case '2':
+                    return (1);
+
+                case 'C':
+                    return (2);
+                case 'c':
+                    return (2);
+                case '3':
+                    return (2);
+
+                default:
+                    return (0);
+            }
+        }
+
+        public static bool CheckCoordinates(string XY)
+        {
+            /*
+            Vérification des coordonnées entrées par les joueurs correspondent aux Plateau traduites visuellement :
+            Exemple : Si Player(1/2) rentre "A1/a1" 
+
+            Visuellement :
+              A B C
+            1 ☺ ■ ■ 
+            2 ■ ■ ■
+            3 ■ ■ ■
+
+            ☺ sera appliquée aux bonnes coordonnées Player1 = X / Player2 = O
+            */
+            switch (XY)
+            {
+                case "A1":
+                    return (true);
+                case "a1":
+                    return (true);
+                case "A2":
+                    return (true);
+                case "a2":
+                    return (true);
+                case "A3":
+                    return (true);
+                case "a3":
+
+                    return (true);
+                case "B1":
+                    return (true);
+                case "b1":
+                    return (true);
+                case "B2":
+                    return (true);
+                case "b2":
+                    return (true);
+                case "B3":
+                    return (true);
+                case "b3":
+                    return (true);
+
+                case "C1":
+                    return (true);
+                case "c1":
+                    return (true);
+                case "C2":
+                    return (true);
+                case "c2":
+                    return (true);
+                case "C3":
+                    return (true);
+                case "c3":
+                    return (true);
+
+                default:
+                    return (false);
+                    /*
+                    Pour le cas "default: / return (false)" : 
+                    Si aucune des autres propositions (return (true)) n'est pas rentrée l'utilisateur devra retaper les coordonnées
+                    */
+            }
+        }
+
+        public static void Player2Turns(string Player2, ref char[,] Plateau)
+        {
+            /*
+            Vérifie si la case du Player2 est occupée
+            Demande l'entré des coordonnées souhaitées du Player2 en mode console
+            Si la console/ le programme accepte 
+            AFFICHAGE de O aux coordonnées souhaitées précédement (visuel)
+            */
+            int ConditionsP2 = 0;
+            string XY;
+            do
+            {
+                if (ConditionsP2 == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("\n► Coordonnées déjà prises ◄");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    ConditionsP2 = 0;
+                }
+                Console.Write("\nAu tour de "); Console.ForegroundColor = ConsoleColor.Red; Console.Write(Player2); Console.ForegroundColor = ConsoleColor.White; Console.Write("\nQuelles coordonnées ? : \n");
+                do
+                {
+                    do
+                    {
+                        XY = Console.ReadLine();
+                        Console.WriteLine("");
+                    } while (XY.Length != 2);
+                } while (CheckCoordinates(XY) != true);
+                if (Plateau[TranscriptionCoordinates(XY, 1), TranscriptionCoordinates(XY, 0)] == '■')
+                    Plateau[TranscriptionCoordinates(XY, 1), TranscriptionCoordinates(XY, 0)] = 'O';
+                else
+                    ConditionsP2 = 1;
+            } while (Plateau[TranscriptionCoordinates(XY, 1), TranscriptionCoordinates(XY, 0)] == '■' | ConditionsP2 == 1);
+        }
+
+        public static void Player1Turns(string Player1, ref char[,] Plateau)
+        {
+            /*
+            Vérifie si la case du Player1 est occupée
+            Demande l'entrée des coordonnées souhaitées du Player1 en mode console
+            Si la console/ le programme accepte 
+            AFFICHAGE de X aux coordonnées souhaitées précédement (visuel)
+            */
+            int ConditionsP1 = 0;
+            string XY;
+
+            do
+            {
+                if (ConditionsP1 == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("\n► Coordonnées déjà prises ◄");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    ConditionsP1 = 0;
+                }
+                Console.Write("\nAu tour de "); Console.ForegroundColor = ConsoleColor.Blue; Console.Write(Player1); Console.ForegroundColor = ConsoleColor.White; Console.Write("\nQuelles coordonnées ? : \n");
+                do
+                {
+                    do
+                    {
+                        XY = Console.ReadLine();
+                        Console.WriteLine("");
+                    } while (XY.Length != 2);
+                } while (CheckCoordinates(XY) != true);
+                if (Plateau[TranscriptionCoordinates(XY, 1), TranscriptionCoordinates(XY, 0)] == '■')
+                    Plateau[TranscriptionCoordinates(XY, 1), TranscriptionCoordinates(XY, 0)] = 'X';
+                else
+                    ConditionsP1 = 1;
+            } while (Plateau[TranscriptionCoordinates(XY, 1), TranscriptionCoordinates(XY, 0)] == '■' | ConditionsP1 == 1);
+        }
+
+        public static void Game(string Player1, string Player2)
+        {
+            /*Déroulement du jeu + victoire ou pas*/
+
+            char[,] Plateau = new char[3, 3]; //Définition du plateau/tableau de jeu en 3x3
+            int tour = 1; //min1 max10 
+            int Victory = 0;
+            GameBoadFilling(ref Plateau);
+            AffichePlateau(Plateau);
+            while (tour != 10 & Victory == 0)
+            {
+                Console.WriteLine("\nTour n° " + tour); //indique le numéro de tour aux joueurs 
+                if (tour % 2 == 1) //Si Modulo de 2 vaut 1 = Player1
+                {
+                    Player1Turns(Player1, ref Plateau); //Instructions au Player1 
+                    if (Player1Win(Plateau) == true)
+                        Victory = 1;
+                }
+                else
+                {
+                    Player2Turns(Player2, ref Plateau); //Instructions au Player2
+                    if (Player2Win(Plateau) == true)
+                        Victory = 1;
+                }
+                Console.Clear();
+                tour++;
+                AffichePlateau(Plateau);
+            }
+            if (tour == 10 & Player1Win(Plateau) == false & Player2Win(Plateau) == false)//voit si il y a un match nul
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n********** MATCH NUL (DRAW) **********\n");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (Player1Win(Plateau) == true) //voit si Player1 gagne
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\n********** "); Console.ForegroundColor = ConsoleColor.Blue; Console.Write(Player1); Console.ForegroundColor = ConsoleColor.Green; Console.Write(" a gagné la partie **********\n");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (Player2Win(Plateau) == true) //voit si Player2 gagne
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\n********** "); Console.ForegroundColor = ConsoleColor.Red; Console.Write(Player2); Console.ForegroundColor = ConsoleColor.Green; Console.Write(" a gagné la partie **********\n");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
+
+        public static void GameBoadFilling(ref char[,] Plateau)
+        {
+            for (int nbi = 0; nbi < 3; nbi++)
+            {
+                for (int nbj = 0; nbj < 3; nbj++)
+                {
+                    Plateau[nbi, nbj] = '■';//caractère mis si dans le tableau il y a un espace
+                }
+            }
+        }
+
+        public static void AffichePlateau(char[,] Plateau)
+        {
+            int count = 1; //compteur pour afficher les chiffres lors de la visualisation du Plateau de jeu
+            Console.WriteLine("  A B C");
+            for (int nbi = 0; nbi < 3; nbi++)
+            {
+                for (int nbj = 0; nbj < 3; nbj++)
+                {
+                    if (nbj == 0)
+                    {
+
+                        Console.Write(count + " ");
+                        count++;
+                    }
+                    if (Plateau[nbi, nbj] == 'X')//voit si il y a un X et va le mettre en bleu 
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    }
+                    if (Plateau[nbi, nbj] == 'O')//voit s'il y a un O et va le mettre en rouge
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Console.Write(Plateau[nbi, nbj] + " ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            Console.WriteLine("");
+
+        }
+
+        public static void Players(string Player1, string Player2)
+        {
+            //affichage de qui va jouer contre qui 
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write(Player1 + " X ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("contre");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(" O " + Player2);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
+        }
+
+        public static void Rules()
+        {
+            Console.WriteLine("********** PROJET MORPION *********\n");
+            Console.WriteLine("Visulisation du tableau de jeu \n");
+            Console.WriteLine("   A B C \n 1 ■ ■ ■ \n 2 ■ ■ ■ \n 3 ■ ■ ■ \n");
+            Console.WriteLine("********** COMMENT JOUER ? *********\n");
+            Console.WriteLine(" - Entrer le nom des joueurs \n");
+            Console.WriteLine(" - Le joueur 1 commence toujours ! \n");
+            Console.Write(" - Joueur 1 ="); Console.ForegroundColor = ConsoleColor.Blue; Console.Write(" X\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n - Joueur 2 ="); Console.ForegroundColor = ConsoleColor.Red; Console.Write(" O\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\nPour assigner votre symbole (");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("X");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(" ou ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("O");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(") à une case \n");
+            Console.WriteLine("Il faudra écrire la colonne (LETTRE) puis la ligne (CHIFFRE) quand il vous le sera demander \n");
+            Console.WriteLine("Exemple : A1 \n   A B C \n 1 X ■ ■ \n 2 ■ ■ ■ \n 3 ■ ■ ■ \n");
+            Console.WriteLine("Voilà. Vous pouvez commencer ! \n");
+            Console.WriteLine("********************\n");
+        }
+
+        static void Main(string[] args)
+        {
+            /* AFFICHAGE DU REGLEMENT, LAISSE 3 SECONDES AUX JOUEURS DE LIRE LE REGLEMENT*/
+            Rules();
+            Console.CursorVisible = false;
+            Thread.Sleep(3000);
+            Console.CursorVisible = true;
+
+            /*DEMANDE LES PRENOMS ou PSEUDOS DES JOUEURS, LAISSE 3 SECONDES AUX JOUEURS AVANT DE DEBUTER LA PARTIE*/
+            string Player1;
+            string Player2;
+            Console.WriteLine("\nNom/ Pseudo du joueur 1 : ");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Player1 = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nNom/ Pseudo du joueur 2 : ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Player2 = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Players(Player1, Player2);
+            Console.CursorVisible = false;
+            Thread.Sleep(3000);
+            Console.CursorVisible = true;
+            Console.Clear();
+ 
+            int Retry;//va permettre de demander aux joueurs s'ils veulent recommencer
+            do
+            {
+                Game(Player1, Player2);
+                Console.WriteLine("\nVoulez-vous rejouer ?");
+                Console.WriteLine("1 = OUI / 2 = NON");
+                Retry = int.Parse(Console.ReadLine());
+                Console.Clear();
+            } while (Retry == 1);
+        }
+    }
+}
